@@ -1,4 +1,5 @@
 import discord
+import json
 
 class myClient(discord.Client):
     async def on_ready(self):
@@ -13,7 +14,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = myClient(intents= intents)
-with open("config.json") as f:
-    token = f["token"]
+with open('config.json', "r") as f:
+    config = json.load(f)
     
-client.run(token)
+client.run(config["token"])
