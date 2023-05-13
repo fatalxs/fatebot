@@ -17,7 +17,7 @@ class myClient(discord.Client):
         print(f"logged on as {self.user} (ID: {self.user.id}).")
         print(f"current prefix is : \"{prefix}\"")
 
-    async def on_message(self,message):
+    async def on_message(self, message):
         if message.author.id == self.user.id:
             return
         if message.content[0] != prefix:
@@ -100,25 +100,25 @@ class myClient(discord.Client):
                 target = await self.fetch_user(message.author.id)
 
             if ch.type != discord.ChannelType.private and ch.type != discord.ChannelType.group:
-                print(target.id)
-                target = svr.get_member(target.id)
+                member = svr.get_member(target.id)
             
             embed = discord.Embed(title=f"{target.name}'s profile", color=0x581ca0)
-            embed.set_thumbnail(target.avatar.url)
+            embed.set_thumbnail(url=target.avatar.url)
             embed.set_author(name=message.author, icon_url=message.author.avatar.url)
 
-            if target is discord.Member:
+            if member:
                 embed.url = None
-                embed.add_field(name="username:", value=f"{target.name}#{target.discriminator} / <@{target.id}>", inline=False)
-                embed.add_field(name="status:", value=target.status, inline=False)
-                embed.add_field(name="userid:", value=target.id, inline=False)
-                embed.add_field(name="created at:", value=target.created_at.strftime("%d/%m/%Y, %H:%M:%S"), inline=False)
+                embed.add_field(name="username:", value=f"{member.name}#{member.discriminator} / <@{member.id}>", inline=False)
+                embed.add_field(name="status:", value=member.status, inline=False)
+                embed.add_field(name="userid:", value=member.id, inline=False)
+                embed.add_field(name="created at:", value=member.created_at.strftime("%d/%m/%Y, %H:%M:%S"), inline=False)
         
             await ch.send(embed=embed)
 
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 
 client = myClient(intents= intents)
 client.run(config["token"])
