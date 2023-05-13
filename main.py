@@ -90,6 +90,32 @@ class myClient(discord.Client):
             
             await ch.send(embed=embed)
 
+        if cmd == "whois":
+            if args:
+                try:
+                    target = await self.fetch_user(message.mentions[0].id)
+                except IndexError:
+                    target = await self.fetch_user(int(args[0]))
+            else:
+                target = await self.fetch_user(message.author.id)
+
+            if ch.type != discord.ChannelType.private and ch.type != discord.ChannelType.group:
+                print(target.id)
+                target = svr.get_member(target.id)
+            
+            embed = discord.Embed(title=f"{target.name}'s profile", color=0x581ca0)
+            embed.set_thumbnail(target.avatar.url)
+            embed.set_author(name=message.author, icon_url=message.author.avatar.url)
+
+            if target is discord.Member:
+                embed.url = None
+                embed.add_field(name="username:", value=f"{target.name}#{target.discriminator} / <@{target.id}>", inline=False)
+                embed.add_field(name="status:", value=target.status, inline=False)
+                embed.add_field(name="userid:", value=target.id, inline=False)
+                embed.add_field(name="created at:", value=target.created_at.strftime("%d/%m/%Y, %H:%M:%S"), inline=False)
+        
+            await ch.send(embed=embed)
+
 
 intents = discord.Intents.default()
 intents.message_content = True
