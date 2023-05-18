@@ -2,7 +2,7 @@ import discord
 import json
 import os, sys
 from components.objects import context
-from components import commands as cmds
+from components.commands import *
 
 path = os.path.abspath(os.path.dirname(sys.argv[0]))
 os.chdir(path)
@@ -32,25 +32,25 @@ class myClient(discord.Client):
 
         match(cmd):
             case "ping":
-                await cmds.ping(ctx)
+                await ping(ctx)
 
             case "av":
-                await cmds.avatar(ctx)
+                await avatar(ctx)
 
             case "avatar":
-                await cmds.avatar(ctx)
+                await avatar(ctx)
             
             case "sav":
-                await cmds.serveravatar(ctx)
+                await serveravatar(ctx)
             
             case "serveravatar":
-                await cmds.serveravatar(ctx)
+                await serveravatar(ctx)
 
             case "banner":
-                await cmds.banner(ctx)
+                await banner(ctx)
 
             case "whois":
-                await cmds.whois(ctx)
+                await whois(ctx)
 
 intents = discord.Intents.default()
 intents.message_content = True
